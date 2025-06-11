@@ -1,0 +1,131 @@
+# NetworkEngine
+
+**NetworkEngine** est une application Java distribuée pour le transfert de fichiers en blocs entre un maître (Master), des senders et des receivers. Elle prend en charge plusieurs stratégies de transfert : `broadcast`, `shuffle équitable`, `shuffle prioritaire`, et `shuffle optimisée`.
+
+---
+
+## 📁 Structure du projet
+
+```
+NetworkEngine/
+├── src/
+│   ├── network/engine/broadcast/   # Diffusion en arbre (TreeBroadcast, Cornet, etc.)
+│   ├── network/engine/core/        # Master, Worker et logique principale
+│   ├── network/engine/shuffle/     # Transfert shuffle : équitable, prioritaire, optimisé
+│   ├── Manifest.txt                # Manifest pour le Master
+│   └── ManifestWorker.txt          # Manifest pour les Workers
+├── bin/                            # Fichiers compilés
+├── MasterApp.jar                   # Exécutable Master
+├── WorkerApp.jar                   # Exécutable Worker
+└── README.md                       # Ce fichier
+```
+
+---
+
+## ⚙️ Technologies
+
+- Java SE
+- TCP/IP Sockets
+- Multithreading
+- Communication distribuée
+- Déploiement automatisé via WSL et `deploy.sh`
+
+---
+
+## 🔧 Compilation
+
+Depuis **VS Code**, exécuter dans le terminal :
+
+```bash
+javac -Xlint:unchecked -encoding UTF-8 -d bin src/network/engine/core/*.java src/network/engine/shuffle/*.java src/network/engine/broadcast/*.java
+```
+
+Création des fichiers JAR :
+
+```bash
+jar cfm MasterApp.jar "src/Manifest.txt" -C bin .
+jar cfm WorkerApp.jar "src/ManifestWorker.txt" -C bin .
+```
+
+---
+
+## 🌐 Connexion VPN (si nécessaire)
+
+Depuis **PowerShell en mode administrateur** :
+
+```powershell
+cd 'C:\Program Files\OpenVPN\bin'
+./openvpn --config ..\config\eduvpn.ensma.fr_lias_20250220_bs-vpn.ovpn
+```
+
+---
+
+## 🚀 Déploiement & Lancement
+
+### Étapes dans PowerShell normal :
+
+1. Accéder au terminal WSL :
+   ```bash
+   wsl
+   ```
+
+2. Lancer le script de déploiement :
+   ```bash
+   ./deploy.sh
+   ```
+
+> Le script `deploy.sh` utilise `scp` pour transférer les fichiers vers les machines distantes, puis ouvre automatiquement un terminal pour chaque exécution (Master + Workers).
+
+---
+
+## 🧪 Exécution manuelle
+
+### 1. **TreeBroadcast**
+
+- **Master** :
+  ```bash
+  java -jar MasterApp.jar
+  ```
+
+- **Chaque Worker** :
+  ```bash
+  java -jar WorkerApp.jar
+  ```
+
+---
+
+### 2. **Cornet (numérotation nécessaire)**
+
+- **Master** :
+  ```bash
+  java -jar MasterApp.jar
+  ```
+
+- **Chaque Worker** (avec un ID unique) :
+  ```bash
+  java -jar WorkerApp.jar <id>
+  ```
+
+---
+
+### 3. **Shuffle**
+
+Sur chaque machine receiver (et non les senders) :
+
+```bash
+MY_IP=192.168.165.126 java -jar WorkerApp.jar
+```
+
+> Remplacer `192.168.165.126` par l’adresse IP réelle du receiver concerné.
+
+
+ **Master** :
+  ```bash
+  java -jar MasterApp.jar
+  ```
+---
+
+## 📌 Remarques
+
+- Le fichier `deploy.sh` permet de simplifier le déploiement multi-machine.
+- Plusieurs stratégies peuvent être comparées en fonction du volume, du temps d’exécution, ou du nombre de threads utilisés.
