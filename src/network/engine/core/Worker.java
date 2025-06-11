@@ -6,7 +6,7 @@ import network.engine.broadcast.TreeBroadcast;
 import network.engine.broadcast.Cornet;
 import network.engine.shuffle.ShufflePrioritaire;
 import network.engine.shuffle.ShuffleEquitable;
-import network.engine.shuffle.ShuffleOptimized;
+import network.engine.shuffle.ShuffleMatriciel;
 public class Worker {
     public static void main(String[] args) {
     /******************TreeBroadcast**********************/

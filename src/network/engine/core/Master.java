@@ -8,7 +8,7 @@ import network.engine.broadcast.TreeBroadcast;
 import network.engine.broadcast.Cornet;
 import network.engine.shuffle.ShufflePrioritaire;
 import network.engine.shuffle.ShuffleEquitable;
-import network.engine.shuffle.ShuffleOptimized;
+import network.engine.shuffle.ShuffleMatriciel;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -63,9 +63,9 @@ public class Master {
 
 
         /*****************Shuffle Optimized ************************/
-       // new Thread(() -> ShuffleOptimized.listenForFinishSignals()).start();
-       //ShuffleOptimized.loadWorkerIPs();
-        //ShuffleOptimized.sendRolesAndPlans();
+       // new Thread(() -> ShuffleMatriciel.listenForFinishSignals()).start();
+       //ShuffleMatriciel.loadWorkerIPs();
+        //ShuffleMatriciel.sendRolesAndPlans();
 
         
     }
